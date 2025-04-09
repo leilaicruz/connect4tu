@@ -1,0 +1,20 @@
+
+[project]
+name = "connect4tu"
+version = "0.1.0"
+description = "Python client to interact with 4TU.ResearchData API: upload, fetch, and report"
+authors = [{name = "Your Name", email = "your@email.com"}]
+readme = "README.md"
+requires-python = ">=3.8"
+dependencies = [
+    "requests",
+    "PyYAML",
+    "pandas"
+]
+
+[project.scripts]
+connect4tu = "connect4tu.cli:main"
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
