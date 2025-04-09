@@ -103,8 +103,6 @@ connect4tu fetch
 connect4tu report --output test.md
 ```
 
----
 
-## 📄 License
 
-MIT License – feel free to reuse, adapt, and contribute!
+
