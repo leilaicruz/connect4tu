@@ -1,7 +1,7 @@
 
 # connect4tu
 
-`connect4tu` is a Python package that provides a command-line interface (CLI) to interact with the [4TU.ResearchData API](https://data.4tu.nl). It supports uploading datasets, fetching recent articles, and generating Markdown reports.
+`connect4tu` is a Python package that provides a command-line interface (CLI) to interact with the [4TU.ResearchData API](https://djehuty.4tu.nl/#x1-600005). It supports uploading datasets, fetching recent articles, and generating Markdown reports.
 
 ---
 
