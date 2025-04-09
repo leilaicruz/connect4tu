@@ -18,7 +18,7 @@ def main():
 
     # Fetch subcommand
     fetch_parser = subparsers.add_parser("fetch", help="Quick fetch and list recent articles")
-    fetch_parser.add_argument("--env_script", type=str, default="connect4tu/secrets/set_env.sh",help="Shell script to export the DJEHUTY_API_TOKEN")
+   
 
     # Report subcommand
     report_parser = subparsers.add_parser("report", help="Generate a filtered Markdown report of datasets")

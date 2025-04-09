@@ -3,13 +3,11 @@ import requests
 import pandas as pd
 import os
 
-def fetch_articles(api_token, base_url="https://data.4tu.nl", endpoint="/v2/articles"):
+def fetch_articles(base_url="https://data.4tu.nl", endpoint="/v2/articles"):
     url = base_url + endpoint
-    headers = {
-        "Authorization": f"Bearer {api_token}"
-    }
+    
     params = {"published_since": 20250101, "limit": 10, "item_type": 9}
-    response = requests.get(url, headers=headers, params=params)
+    response = requests.get(url, params=params)
     
     if response.ok:
         articles_json = response.json()
@@ -30,7 +28,5 @@ def fetch_articles(api_token, base_url="https://data.4tu.nl", endpoint="/v2/arti
         return None
 
 def fetch_main():
-    token = os.getenv("DJEHUTY_API_TOKEN")
-    if not token:
-        raise ValueError("DJEHUTY_API_TOKEN not found in environment variables.")
-    fetch_articles(token)
+ 
+    fetch_articles()
