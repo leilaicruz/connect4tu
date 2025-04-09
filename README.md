@@ -41,7 +41,7 @@ chmod +x set_env.sh
 ### Upload a Dataset
 
 ```bash
-connect4tu upload metadata_upload_dataset.yaml --env_script set_env.sh
+connect4tu upload example_metadata.yaml --env_script set_env.sh
 ```
 
 Optional arguments:
