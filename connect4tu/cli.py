@@ -31,7 +31,7 @@ def main():
     args = parser.parse_args()
 
     if args.command == "upload":
-        upload_main(args.yaml_file, args.base_url, args.endpoint)
+        upload_main(args.yaml_file, args.base_url, args.endpoint,api_token=None)
     elif args.command == "fetch":
         fetch_main()
     elif args.command == "report":

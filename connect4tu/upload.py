@@ -7,9 +7,10 @@ from .env_utils import load_env_from_script
 def upload_dataset(metadata, api_token, base_url="https://next.data.4tu.nl", endpoint="/v2/account/articles"):
     url = base_url + endpoint
     headers = {
-        "Authorization": f"Bearer {api_token}",  # <-- FIX: should be Bearer, not token
+        "Authorization": f"token {api_token}",  
         "Content-Type": "application/json"
     }
+  
     response = requests.post(url, headers=headers, json=metadata, timeout=60)
 
     if response.ok:
@@ -19,14 +20,11 @@ def upload_dataset(metadata, api_token, base_url="https://next.data.4tu.nl", end
         print(f"❌ Upload failed: {response.status_code}")
         print(response.text)
 
-def upload_main(yaml_file, base_url="https://next.data.4tu.nl", endpoint="/v2/account/articles"):
-    # Load environment variables
-    load_env_from_script()
-
-    # Get the token
-    api_token = os.getenv("NEXT_API_TOKEN")
-    if not api_token:
-        raise ValueError("Environment variable NEXT_API_TOKEN not set. Make sure your .env file defines it.")
+def upload_main(yaml_file, base_url="https://next.data.4tu.nl", endpoint="/v2/account/articles", api_token=None):
+    if api_token is None:
+        api_token = os.getenv("NEXT_API_TOKEN")
+        if not api_token:
+            raise ValueError("Environment variable NEXT_API_TOKEN not set. Please define it in your .env file.")
 
     try:
         with open(yaml_file, "r") as f:
@@ -40,4 +38,5 @@ def upload_main(yaml_file, base_url="https://next.data.4tu.nl", endpoint="/v2/ac
 
     # Upload
     upload_dataset(metadata, api_token, base_url, endpoint)
+
     

@@ -38,42 +38,58 @@ To setup your api private token as environmental variables
 
 ## 🚀 Usage
 
-### Upload a Dataset
+> **Important:**  
+> Before using the CLI, create a `.env` file at the root of your project with your API tokens:
+> ```bash
+> # Example .env file
+> NEXT_API_TOKEN=your_token_for_next_data_4tu
+> TOKEN_4TU=your_token_for_data_4tu
+> ```
+
+---
+
+### Upload a Dataset (Requires Token)
 
 ```bash
-connect4tu upload metadata_upload_dataset.yaml --env_script set_env.sh
+connect4tu upload metadata_upload_dataset.yaml
 ```
 
 Optional arguments:
 - `--base_url`: Custom API URL (default: `https://next.data.4tu.nl`)
 - `--endpoint`: Upload endpoint (default: `/v2/account/articles`)
 
+The token (`NEXT_API_TOKEN`) will be automatically read from the `.env` file.
+
 ---
 
-### Fetch Recent Datasets (No Token Needed)
+### Fetch Recent Datasets (Public or Private)
 
 ```bash
 connect4tu fetch
 ```
 
-This prints a quick table of recent articles published on 4TU.ResearchData.
+- If `TOKEN_4TU` is available in `.env`, private datasets will also be accessible.
+- If no token is set, only public datasets will be listed.
 
 ---
 
 ### Generate a Markdown Report
 
 ```bash
-connect4tu report --since 2025-03-01 --limit 20 --organization-filter "Delft" --format-filter "NetCDF" --output tud_netcdf_report.md
+connect4tu report --since 2025-03-01 --limit 20 --organization-filter "Delft" --format-filter "NetCDF" --output connect4tu/outputs/tud_netcdf_report.md
 ```
 
 Options:
 - `--since`: Date in `YYYY-MM-DD` format
-- `--limit`: Max number of records to fetch
-- `--organization-filter`: Filter by organization name (from metadata)
-- `--format-filter`: Filter by dataset format (from metadata)
-- `--output`: Output path for the report
+- `--limit`: Maximum number of records to fetch
+- `--organization-filter`: Filter by organization name (from dataset metadata)
+- `--format-filter`: Filter by dataset format (from dataset metadata)
+- `--output`: Output path for the generated Markdown report
+
+The report tool will also use the `TOKEN_4TU` if available, to fetch private or unpublished datasets.
 
 ---
+
 
 ## 🧠 Project Structure
 
