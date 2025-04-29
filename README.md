@@ -23,14 +23,14 @@ This installs the `connect4tu` CLI in editable mode.
 
 ## 🔐 Setting Up Your Token
 
-Only the **upload** command requires authentication. You need to set the `API_TOKEN` via a shell script:
+To setup your api private token as environmental variables
 
-1. Create a file called `set_env.sh`:
+- Create a `.env` file at the root of your project
+- Write in the following format your private token(s) 
+`TOKEN_xx=BLABLABLABLABLBALBA`
+- Type in the terminal `source .env`
+- Then anywhere you use the token as part of your API call , use `${TOKEN_xx}` to invoke it. 
 
-```bash
-echo 'export API_TOKEN="your_actual_token_here"' > set_env.sh
-chmod +x set_env.sh
-```
 
 2. Add it to your `.gitignore` to keep it private.
 

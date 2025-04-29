@@ -1,14 +1,21 @@
-
 import os
-import subprocess
 
-def load_env_from_script(script_path):
+def load_env_from_script(env_path=".env"):
     """
-    Loads environment variables from a shell script into the current Python process.
+    Loads environment variables from a .env file into the current Python process.
+    Expected format: KEY=VALUE, one per line.
     """
-    command = ['bash', '-c', f'source {script_path} && env']
-    proc = subprocess.Popen(command, stdout=subprocess.PIPE)
-    for line in proc.stdout:
-        (key, _, value) = line.decode("utf-8").partition("=")
-        os.environ[key.strip()] = value.strip()
-    proc.communicate()
+    if not os.path.exists(env_path):
+        raise FileNotFoundError(f".env file not found at {env_path}")
+
+    with open(env_path, "r") as file:
+        for line in file:
+            line = line.strip()
+            if not line or line.startswith("#"):
+                continue  # Skip comments and blank lines
+            if "=" not in line:
+                continue  # Skip malformed lines
+
+            key, value = line.split("=", 1)
+            os.environ[key.strip()] = value.strip()
+
