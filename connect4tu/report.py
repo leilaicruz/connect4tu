@@ -1,10 +1,17 @@
-
 import requests
 from datetime import datetime
 import os
 import sys
 
 BASE_URL = "https://data.4tu.nl/v2"
+
+def get_auth_headers():
+    """Prepare Authorization header if TOKEN_4TU is set."""
+    token = os.getenv("TOKEN_4TU")
+    headers = {}
+    if token:
+        headers["Authorization"] = f"Bearer {token}"
+    return headers
 
 def fetch_recent_datasets(published_since, item_type=3, limit=10):
     url = f"{BASE_URL}/articles"
@@ -13,13 +20,15 @@ def fetch_recent_datasets(published_since, item_type=3, limit=10):
         "limit": limit,
         "published_since": published_since
     }
-    response = requests.get(url, params=params)
+    headers = get_auth_headers()
+    response = requests.get(url, params=params, headers=headers if headers else None, timeout=60)
     response.raise_for_status()
     return response.json()
 
 def fetch_dataset_details(uuid):
     url = f"{BASE_URL}/articles/{uuid}"
-    response = requests.get(url)
+    headers = get_auth_headers()
+    response = requests.get(url, headers=headers if headers else None, timeout=60)
     response.raise_for_status()
     return response.json()
 
