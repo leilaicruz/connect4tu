@@ -40,4 +40,4 @@ def upload_main(yaml_file, base_url="https://next.data.4tu.nl", endpoint="/v2/ac
 
     # Upload
     upload_dataset(metadata, api_token, base_url, endpoint)
-    print("🚀 Uploading dataset...")
+    
