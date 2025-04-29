@@ -1,4 +1,3 @@
-
 import argparse
 from .upload import upload_main
 from .fetch import fetch_main
@@ -6,19 +5,20 @@ from .report import report_main
 from .env_utils import load_env_from_script
 
 def main():
+    # Load environment variables from .env at startup
+    load_env_from_script()
+
     parser = argparse.ArgumentParser(prog="connect4tu", description="CLI for 4TU.ResearchData API")
     subparsers = parser.add_subparsers(dest="command", required=True)
 
     # Upload subcommand
     upload_parser = subparsers.add_parser("upload", help="Upload a dataset")
     upload_parser.add_argument("yaml_file", help="Path to the metadata YAML file")
-    upload_parser.add_argument("--env_script", type=str, default="connect4tu/secrets/set_env.sh", help="Shell script to export the NEXT_API_TOKEN")
     upload_parser.add_argument("--base_url", type=str, default="https://next.data.4tu.nl")
     upload_parser.add_argument("--endpoint", type=str, default="/v2/account/articles")
 
     # Fetch subcommand
     fetch_parser = subparsers.add_parser("fetch", help="Quick fetch and list recent articles")
-   
 
     # Report subcommand
     report_parser = subparsers.add_parser("report", help="Generate a filtered Markdown report of datasets")
@@ -30,11 +30,8 @@ def main():
 
     args = parser.parse_args()
 
-    if args.command in ["upload", "fetch"]:
-        load_env_from_script(getattr(args, "env_script", "connect4tu/secrets/set_env.sh"))
-
     if args.command == "upload":
-        upload_main(args.yaml_file, args.base_url, args.endpoint)
+        upload_main(args.yaml_file, args.base_url, args.endpoint,api_token=None)
     elif args.command == "fetch":
         fetch_main()
     elif args.command == "report":
@@ -45,3 +42,6 @@ def main():
             org_filter=args.organization_filter,
             format_filter=args.format_filter
         )
+
+if __name__ == "__main__":
+    main()
