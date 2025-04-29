@@ -32,7 +32,7 @@ To setup your api private token as environmental variables
 - Then anywhere you use the token as part of your API call , use `${TOKEN_xx}` to invoke it. 
 
 
-2. Add it to your `.gitignore` to keep it private.
+- Add it to your `.gitignore` to keep it private.
 
 ---
 

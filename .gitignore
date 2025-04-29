@@ -4,3 +4,4 @@ connect4tu.egg-info/
 connect4tu/pyvenv.cfg
 connect4tu/lib64
 connect4tu/__pycache__
+.env
