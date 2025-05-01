@@ -13,7 +13,7 @@ def get_auth_headers():
         headers["Authorization"] = f"Bearer {token}"
     return headers
 
-def fetch_recent_datasets(published_since, item_type=3, limit=10):
+def fetch_recent_datasets(published_since, item_type=3, limit=100):
     url = f"{BASE_URL}/articles"
     params = {
         "item_type": item_type,
@@ -55,15 +55,35 @@ def generate_report(datasets, org_filter=None, format_filter=None):
             organization = get_custom_field_value(custom_fields, "Organizations")
             format_ = get_custom_field_value(custom_fields, "Format")
 
+            # Skip datasets that only contain ZIP files
+            files = details.get("files", [])
+            if files:
+                only_zip_files = all(
+                    f.get("mime_type", "").lower() == "application/zip" or
+                    f.get("name", "").lower().endswith(".zip") or 
+                    f.get("name", "").lower().endswith(".rar") or 
+                    f.get("name", "").lower().endswith(".tar.gz")
+                    for f in files
+                )
+                if only_zip_files:
+                    continue  # Skip this dataset
+
             if org_filter and format_filter:
-                if org_filter.lower() not in organization.lower() or format_filter.lower() not in format_.lower():
+                org_condition = org_filter.lower() in organization.lower()
+                format_list = [f.strip().lower() for f in format_.split(",")]
+                format_condition = any(format_filter.lower() in fmt for fmt in format_list)
+
+                if not (org_condition and format_condition):
                     continue
             elif org_filter:
                 if org_filter.lower() not in organization.lower():
                     continue
             elif format_filter:
-                if format_filter.lower() not in format_.lower():
+                format_list = [f.strip().lower() for f in format_.split(",")]
+                if not any(format_filter.lower() in fmt for fmt in format_list):
                     continue
+
+
 
             included_count += 1
 
@@ -92,8 +112,13 @@ def report_main(since, limit, output_path, org_filter=None, format_filter=None):
     try:
         datasets = fetch_recent_datasets(since, limit=limit)
         report = generate_report(datasets, org_filter=org_filter, format_filter=format_filter)
+        # Ensure parent directory exists
+        os.makedirs(os.path.dirname(output_path), exist_ok=True)
+
         with open(output_path, "w") as f:
             f.write(report)
+
+        
         print(f"✅ Report saved to {output_path}")
     except Exception as e:
         print(f"❌ Error: {e}")
