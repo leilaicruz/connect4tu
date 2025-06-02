@@ -6,3 +6,4 @@ connect4tu/lib64
 connect4tu/__pycache__
 .env
 outputs/
+/venv/
