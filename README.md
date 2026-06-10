@@ -57,7 +57,7 @@ connect4tu upload metadata_upload_dataset.yaml
 ```
 
 Optional arguments:
-- `--base_url`: Custom API URL (default: `https://next.data.4tu.nl`)
+- `--base_url`: Custom API URL (default: `https://data.4tu.nl`)
 - `--endpoint`: Upload endpoint (default: `/v2/account/articles`)
 
 The token (`NEXT_API_TOKEN`) will be automatically read from the `.env` file.
@@ -73,7 +73,7 @@ connect4tu fetch
 - If `TOKEN_4TU` is available in `.env`, private datasets will also be accessible.
 - If no token is set, only public datasets will be listed.
 
----
+
 
 ### Generate a Markdown Report
 
@@ -90,7 +90,17 @@ Options:
 
 The report tool will also use the `TOKEN_4TU` if available, to fetch private or unpublished datasets.
 
----
+### Generate a report for software deposits linked to a research output
+
+Software records in 4TU.ResearchData use `item_type=9`. To generate a report of software deposits that have a related research output title:
+
+```bash
+connect4tu report \
+  --since 2025-01-01 \
+  --item-type 9 \
+  --require-field resource_title \
+  --output software_with_resource_title.md
+
 
 
 ## 🧠 Project Structure

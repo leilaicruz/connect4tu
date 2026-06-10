@@ -27,6 +27,28 @@ def main():
     report_parser.add_argument("--output", type=str, default="dataset_report.md", help="Output file for Markdown report")
     report_parser.add_argument("--organization-filter", type=str, help="Filter datasets by organization name")
     report_parser.add_argument("--format-filter", type=str, help="Filter datasets by file format")
+    report_parser.add_argument("--item-type",type=int,default=3,help="4TU item type to fetch: 3 for datasets, 9 for software")
+
+    report_parser.add_argument(
+        "--require-field",
+        action="append",
+        default=[],
+        help=(
+            "Only include records where this field is present and non-empty. "
+            "Can be used multiple times, e.g. --require-field resource_title "
+            "--require-field resource_doi"
+        )
+    )
+
+    report_parser.add_argument(
+        "--field-filter-mode",
+        choices=["all", "any"],
+        default="all",
+        help=(
+            "How to combine multiple --require-field filters. "
+            "'all' requires all fields; 'any' requires at least one."
+        )
+    )
 
     args = parser.parse_args()
 
@@ -36,12 +58,15 @@ def main():
         fetch_main()
     elif args.command == "report":
         report_main(
-            since=args.since,
-            limit=args.limit,
-            output_path=args.output,
-            org_filter=args.organization_filter,
-            format_filter=args.format_filter
-        )
+        since=args.since,
+        limit=args.limit,
+        output_path=args.output,
+        item_type=args.item_type,
+        required_fields=args.require_field,
+        field_filter_mode=args.field_filter_mode,
+        org_filter=args.organization_filter,
+        format_filter=args.format_filter,
+    )
 
 if __name__ == "__main__":
     main()
